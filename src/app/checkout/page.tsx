@@ -6,9 +6,10 @@ import { useCartStore } from '@/store/useCartStore';
 
 export default function CheckoutPage() {
     const router = useRouter();
-    const { items, getTotalPrice } = useCartStore();
+    const { items, getTotalPrice, clearCart } = useCartStore();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         setMounted(true);
@@ -17,14 +18,37 @@ export default function CheckoutPage() {
         }
     }, [items.length, router, mounted]);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setError('');
 
-        // Mock processing delay
-        setTimeout(() => {
-            router.push('/checkout/success');
-        }, 1500);
+        try {
+            const res = await fetch('/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    items: items.map(item => ({
+                        productId: item.id,
+                        title: item.title,
+                        price: item.price,
+                        quantity: item.quantity,
+                    })),
+                }),
+            });
+
+            if (res.ok) {
+                clearCart();
+                router.push('/checkout/success');
+            } else {
+                const data = await res.json();
+                setError(data.error || 'Failed to place order. Please try again.');
+                setIsSubmitting(false);
+            }
+        } catch {
+            setError('Network error. Please try again.');
+            setIsSubmitting(false);
+        }
     };
 
     if (!mounted || items.length === 0) return null;
@@ -35,6 +59,12 @@ export default function CheckoutPage() {
                 <h1 className="title">Checkout</h1>
                 <p className="subtitle">Please enter your shipping and payment details.</p>
             </div>
+
+            {error && (
+                <div style={{ padding: '1rem', backgroundColor: 'rgba(239,68,68,0.1)', borderRadius: '8px', color: '#ef4444', fontWeight: 500 }}>
+                    {error}
+                </div>
+            )}
 
             <form onSubmit={handleSubmit} className="checkout-form" style={{ display: 'grid', gap: '2rem' }}>
                 <div className="card" style={{ padding: '2rem' }}>
@@ -82,7 +112,7 @@ export default function CheckoutPage() {
                     </div>
                 </div>
 
-                <div className="card" style={{ padding: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--bg-surface-hover)' }}>
+                <div className="card" style={{ padding: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--bg-surface-hover)', flexWrap: 'wrap', gap: '1rem' }}>
                     <div>
                         <p style={{ color: 'var(--text-secondary)', marginBottom: '0.25rem' }}>Total Amount to Pay</p>
                         <p style={{ fontSize: '1.5rem', fontWeight: 800 }}>${(getTotalPrice() * 1.1).toFixed(2)}</p>

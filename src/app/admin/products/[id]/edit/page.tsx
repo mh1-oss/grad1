@@ -43,6 +43,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                     description: product.description,
                     imageURL: product.imageURL,
                     categoryId: product.categoryId,
+                    stock: product.stock,
                 }}
                 categories={categories}
             />

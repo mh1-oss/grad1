@@ -15,6 +15,7 @@ interface Product {
     description: string;
     imageURL?: string | null;
     categoryId: string;
+    stock: number | string;
 }
 
 interface Props {
@@ -33,6 +34,7 @@ export default function AdminProductForm({ initialData, categories }: Props) {
         description: initialData?.description || '',
         imageURL: initialData?.imageURL || '',
         categoryId: initialData?.categoryId || (categories.length > 0 ? categories[0].id : ''),
+        stock: initialData?.stock ?? 0,
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -124,6 +126,20 @@ export default function AdminProductForm({ initialData, categories }: Props) {
                         ))}
                     </select>
                 </div>
+            </div>
+
+            <div>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Stock Quantity</label>
+                <input
+                    type="number"
+                    name="stock"
+                    min="0"
+                    value={formData.stock}
+                    onChange={handleChange}
+                    className="input-field"
+                    required
+                />
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)', marginTop: '0.25rem' }}>Set to 0 to display as &quot;Out of Stock&quot;</p>
             </div>
 
             <div>

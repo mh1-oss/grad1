@@ -2,7 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { SlideData } from './AdminSlideForm';
+
+interface SlideData {
+    id?: string;
+    badge: string;
+    title: string;
+    subtitle: string;
+    imageURL: string;
+    linkText: string;
+    linkUrl: string;
+    order?: number | string;
+}
 
 interface HeroSliderProps {
     slides: SlideData[];
@@ -21,10 +31,10 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
 
     if (!slides || slides.length === 0) {
         return (
-            <section className="hero" style={{ position: 'relative' }}>
-                <div className="hero-content" style={{ textAlign: 'center', width: '100%', gridColumn: '1 / -1' }}>
-                    <h1 className="title">Welcome to TechShop</h1>
-                    <p className="subtitle">Premium E-Commerce Platform</p>
+            <section className="hero-slider" style={{ minHeight: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-surface)' }}>
+                <div style={{ textAlign: 'center' }}>
+                    <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Welcome to TechShop</h1>
+                    <p style={{ color: 'var(--text-secondary)' }}>Premium E-Commerce Platform</p>
                 </div>
             </section>
         );
@@ -33,40 +43,34 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
     const slide = slides[currentSlide];
 
     return (
-        <section className="hero" style={{ position: 'relative' }}>
-            <div className="hero-content animate-fade-in" key={`content-${currentSlide}`}>
-                <span className="hero-badge">{slide.badge}</span>
-                <h1 className="title">{slide.title}</h1>
-                <p className="subtitle">{slide.subtitle}</p>
-                <div className="hero-actions">
-                    <Link href={slide.linkUrl} className="btn-primary">
-                        {slide.linkText}
-                    </Link>
-                </div>
-            </div>
-            <div className="hero-image-wrapper animate-fade-in" key={`image-${currentSlide}`}>
+        <section className="hero-slider" key={`slide-${currentSlide}`}>
+            {/* Background Image */}
+            <div className="hero-slider__bg">
                 <img
                     src={slide.imageURL}
                     alt={slide.title}
-                    className="hero-image"
+                    className="hero-slider__img"
                 />
+                <div className="hero-slider__overlay" />
             </div>
 
-            {/* Slider Controls */}
-            <div style={{ position: 'absolute', bottom: '1.5rem', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '0.5rem', zIndex: 10 }}>
+            {/* Content */}
+            <div className="hero-slider__content animate-fade-in">
+                <span className="hero-slider__badge">{slide.badge}</span>
+                <h1 className="hero-slider__title">{slide.title}</h1>
+                <p className="hero-slider__subtitle">{slide.subtitle}</p>
+                <Link href={slide.linkUrl} className="btn-primary">
+                    {slide.linkText}
+                </Link>
+            </div>
+
+            {/* Dots */}
+            <div className="hero-slider__dots">
                 {slides.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => setCurrentSlide(index)}
-                        style={{
-                            width: index === currentSlide ? '32px' : '8px',
-                            height: '8px',
-                            borderRadius: '4px',
-                            backgroundColor: index === currentSlide ? 'var(--primary-color)' : 'rgba(148, 163, 184, 0.5)',
-                            border: 'none',
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease'
-                        }}
+                        className={`hero-slider__dot ${index === currentSlide ? 'hero-slider__dot--active' : ''}`}
                         aria-label={`Go to slide ${index + 1}`}
                     />
                 ))}

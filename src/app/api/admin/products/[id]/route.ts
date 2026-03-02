@@ -59,17 +59,19 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
         const params = await context.params;
         const productId = params.id;
         const data = await request.json();
-        const { title, price, description, imageURL, categoryId } = data;
+        const { title, price, description, imageURL, categoryId, stock } = data;
+
+        const updateData: any = {};
+        if (title !== undefined) updateData.title = title;
+        if (price !== undefined) updateData.price = parseFloat(price);
+        if (description !== undefined) updateData.description = description;
+        if (imageURL !== undefined) updateData.imageURL = imageURL || null;
+        if (categoryId !== undefined) updateData.categoryId = categoryId;
+        if (stock !== undefined) updateData.stock = parseInt(stock);
 
         const product = await prisma.product.update({
             where: { id: productId },
-            data: {
-                title,
-                price: parseFloat(price),
-                description,
-                imageURL: imageURL || null,
-                categoryId,
-            },
+            data: updateData,
         });
 
         return NextResponse.json({ message: 'Product updated successfully', product }, { status: 200 });

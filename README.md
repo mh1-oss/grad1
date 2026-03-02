@@ -32,23 +32,20 @@ Welcome to **Tech-Shop**, a premium and responsive e-commerce platform built as 
 
 ---
 
-## 🔑 Test Accounts
+## 🔑 Test Accounts & Configuration
 
-| Role  | Email               | Password   |
-|-------|---------------------|------------|
-| Admin | `admin@techshop.com` | `admin123` |
+**Admin Account:**
+*   **Email:** `admin@techshop.com`
+*   **Password:** `admin123`
 
-> You can also register a new regular user from the Sign Up page.
+*(Note: Ensure your `.env` file contains the `JWT_SECRET` variable for authentication to work correctly. A fallback is used if missing, but it's required for production).*
 
-### 💳 Test Payment Card
+### 💳 Demo Checkout Card
 
-Use these dummy details on the Checkout page:
-
-| Field       | Value              |
-|-------------|--------------------|
-| Card Number | `4242 4242 4242 4242` |
-| Expiry Date | `12/28`            |
-| CVV         | `123`              |
+When using the checkout feature, you can use the following dummy card details:
+*   **Card Number:** `4242 4242 4242 4242`
+*   **Expiry Date:** `12/28`
+*   **CVV:** `123`
 
 ---
 
