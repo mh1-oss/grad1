@@ -14,18 +14,8 @@ export default async function PrintAllReceipts() {
 
     return (
         <div style={{ backgroundColor: '#f9fafb', minHeight: '100vh', padding: '2rem 0' }}>
-            <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'right', marginBottom: '2rem' }}>
-                <button
-                    onClick={() => window.print()}
-                    style={{ padding: '0.5rem 1rem', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '1rem' }}
-                    className="no-print"
-                >
-                    Print All
-                </button>
-            </div>
-
             {orders.map((order: any, index: number) => (
-                <div key={order.id} style={{ backgroundColor: 'white', padding: '2rem', maxWidth: '800px', margin: '0 auto', marginBottom: '4rem', fontFamily: 'sans-serif', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', pageBreakAfter: index < orders.length - 1 ? 'always' : 'auto' }}>
+                <div key={order.id} style={{ backgroundColor: 'white', padding: '2rem', maxWidth: '800px', margin: '0 auto', marginBottom: '4rem', fontFamily: 'sans-serif', pageBreakAfter: index < orders.length - 1 ? 'always' : 'auto' }}>
                     <div style={{ textAlign: 'center', marginBottom: '2rem', borderBottom: '2px solid #eee', paddingBottom: '1rem' }}>
                         <h1 style={{ fontSize: '2rem', margin: 0 }}>TechShop Receipt</h1>
                         <p style={{ color: '#666', marginTop: '0.5rem' }}>Receipt ID: {order.id}</p>
@@ -33,9 +23,22 @@ export default async function PrintAllReceipts() {
                     </div>
 
                     <div style={{ marginBottom: '2rem' }}>
-                        <h2 style={{ fontSize: '1.2rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Customer Details</h2>
-                        <p><strong>Name:</strong> {order.user?.name || 'Guest'}</p>
-                        <p><strong>Email:</strong> {order.user?.email}</p>
+                        <h2 style={{ fontSize: '1.2rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Customer & Shipping Details</h2>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1rem' }}>
+                            <div>
+                                <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '0.2rem' }}>Account Information</p>
+                                <p><strong>Name:</strong> {order.user?.name || 'Guest'}</p>
+                                <p><strong>Email:</strong> {order.user?.email}</p>
+                            </div>
+                            {order.shippingName && (
+                                <div>
+                                    <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '0.2rem' }}>Shipping Address</p>
+                                    <p><strong>Name:</strong> {order.shippingName}</p>
+                                    <p><strong>Address:</strong> {order.shippingAddress}</p>
+                                    <p><strong>City & Postal:</strong> {order.shippingCity}, {order.shippingPostal}</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     <div style={{ marginBottom: '2rem' }}>

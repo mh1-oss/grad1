@@ -31,9 +31,22 @@ export default async function PrintSingleReceipt({
             </div>
 
             <div style={{ marginBottom: '2rem' }}>
-                <h2 style={{ fontSize: '1.2rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Customer Details</h2>
-                <p><strong>Name:</strong> {order.user?.name || 'Guest'}</p>
-                <p><strong>Email:</strong> {order.user?.email}</p>
+                <h2 style={{ fontSize: '1.2rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Customer & Shipping Details</h2>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1rem' }}>
+                    <div>
+                        <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '0.2rem' }}>Account Information</p>
+                        <p><strong>Name:</strong> {order.user?.name || 'Guest'}</p>
+                        <p><strong>Email:</strong> {order.user?.email}</p>
+                    </div>
+                    {order.shippingName && (
+                        <div>
+                            <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '0.2rem' }}>Shipping Address</p>
+                            <p><strong>Name:</strong> {order.shippingName}</p>
+                            <p><strong>Address:</strong> {order.shippingAddress}</p>
+                            <p><strong>City & Postal:</strong> {order.shippingCity}, {order.shippingPostal}</p>
+                        </div>
+                    )}
+                </div>
             </div>
 
             <div style={{ marginBottom: '2rem' }}>

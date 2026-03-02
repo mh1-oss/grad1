@@ -11,12 +11,23 @@ export default function CheckoutPage() {
     const [mounted, setMounted] = useState(false);
     const [error, setError] = useState('');
 
+    const [shippingInfo, setShippingInfo] = useState({
+        fullName: '',
+        address: '',
+        city: '',
+        postalCode: ''
+    });
+
     useEffect(() => {
         setMounted(true);
         if (items.length === 0 && mounted) {
             router.push('/cart');
         }
     }, [items.length, router, mounted]);
+
+    const handleShippingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setShippingInfo({ ...shippingInfo, [e.target.name]: e.target.value });
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -34,6 +45,7 @@ export default function CheckoutPage() {
                         price: item.price,
                         quantity: item.quantity,
                     })),
+                    shippingInfo
                 }),
             });
 
@@ -72,19 +84,19 @@ export default function CheckoutPage() {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                         <div style={{ gridColumn: '1 / -1' }}>
                             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Full Name</label>
-                            <input type="text" className="input-field" required placeholder="John Doe" />
+                            <input type="text" name="fullName" value={shippingInfo.fullName} onChange={handleShippingChange} className="input-field" required placeholder="John Doe" />
                         </div>
                         <div style={{ gridColumn: '1 / -1' }}>
                             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Address</label>
-                            <input type="text" className="input-field" required placeholder="123 Main St" />
+                            <input type="text" name="address" value={shippingInfo.address} onChange={handleShippingChange} className="input-field" required placeholder="123 Main St" />
                         </div>
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>City</label>
-                            <input type="text" className="input-field" required placeholder="New York" />
+                            <input type="text" name="city" value={shippingInfo.city} onChange={handleShippingChange} className="input-field" required placeholder="New York" />
                         </div>
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Postal Code</label>
-                            <input type="text" className="input-field" required placeholder="10001" />
+                            <input type="text" name="postalCode" value={shippingInfo.postalCode} onChange={handleShippingChange} className="input-field" required placeholder="10001" />
                         </div>
                     </div>
                 </div>

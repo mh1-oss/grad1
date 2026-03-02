@@ -670,6 +670,31 @@ button {
   }
 }
 
+@media print {
+
+  .navbar-container,
+  .admin-sidebar,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  body,
+  html,
+  .admin-layout {
+    background-color: white !important;
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+}
+
 .nav-links a:not(.icon-btn) {
   font-weight: 500;
   color: var(--text-secondary);

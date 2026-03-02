@@ -22,7 +22,7 @@ export async function POST(request: Request) {
         const userId = payload.userId as string;
 
         const data = await request.json();
-        const { items } = data; // [{productId, title, price, quantity}]
+        const { items, shippingInfo } = data; // [{productId, title, price, quantity}]
 
         if (!items || items.length === 0) {
             return NextResponse.json({ error: 'Cart is empty' }, { status: 400 });
@@ -50,6 +50,10 @@ export async function POST(request: Request) {
                 data: {
                     userId,
                     total: total * 1.1, // include tax
+                    shippingName: shippingInfo?.fullName || null,
+                    shippingAddress: shippingInfo?.address || null,
+                    shippingCity: shippingInfo?.city || null,
+                    shippingPostal: shippingInfo?.postalCode || null,
                     items: {
                         create: items.map((item: any) => ({
                             productId: item.productId,
