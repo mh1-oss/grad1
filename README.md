@@ -12,7 +12,7 @@ Welcome to **Tech-Shop**, a premium and responsive e-commerce platform built as 
 
 ### 🛍️ Storefront
 - **Premium UI/UX** with Vanilla CSS, CSS Variables, and smooth micro-animations.
-- **Light/Dark Mode** toggle via React Context.
+- **Light/Dark Mode** toggle via React Context. 
 - **Dynamic Hero Slider** — auto-playing slides managed from the Admin Dashboard.
 - **Product Browsing** — category filter, search bar, and pagination.
 - **Product Details** — image gallery and "Add to Cart" functionality.
